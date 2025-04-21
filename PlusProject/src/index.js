@@ -1,13 +1,34 @@
-function displayTemperature(response) {
+function showTemperature(response) {
   let city = response.data.city;
-  console.log(city);
+  let temperature = Math.round(response.data.temperature.current);
+  let condition = response.data.condition.description;
+  let humidity = response.data.temperature.humidity;
+  let windSpeed = response.data.wind.speed;
+
+  let temperatureElement = document.querySelector("#current-temperature-value");
+  temperatureElement.innerHTML = temperature;
+
+  let cityElement = document.querySelector("#current-city");
+  cityElement.innerHTML = city;
+
+  let conditionElement = document.querySelector("#current-condition");
+  conditionElement.innerHTML = condition;
+
+  let humidityElement = document.querySelector("#current-humidity");
+  humidityElement.innerHTML = `${humidity}%`;
+
+  let windSpeedElement = document.querySelector("#current-wind-speed");
+  windSpeedElement.innerHTML = `${windSpeed}km/hr`;
 }
 
 function search(event) {
   event.preventDefault();
   let searchInputElement = document.querySelector("#search-input");
-  let cityElement = document.querySelector("#current-city");
-  cityElement.innerHTML = searchInputElement.value;
+
+  let apiKey = "1894f4b60349tcab94fb26933d94a5o1";
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${searchInputElement.value}&key=${apiKey}`;
+
+  axios.get(apiUrl).then(showTemperature);
 }
 
 function formatDate(date) {
@@ -44,9 +65,3 @@ let currentDateELement = document.querySelector("#current-date");
 let currentDate = new Date();
 
 currentDateELement.innerHTML = formatDate(currentDate);
-
-//let apiKey = "1894f4b60349tcab94fb26933d94a5o1";
-let apiUrl =
-  "https://api.shecodes.io/weather/v1/current?query=Sydney&key=1894f4b60349tcab94fb26933d94a5o1";
-
-axios.get("apiUrl").then(displayTemperature);
